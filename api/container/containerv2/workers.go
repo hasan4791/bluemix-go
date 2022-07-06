@@ -91,7 +91,7 @@ type Workers interface {
 	ListByWorkerPool(clusterIDOrName, workerPoolIDOrName string, showDeleted bool, target ClusterTargetHeader) ([]Worker, error)
 	ListWorkers(clusterIDOrName string, showDeleted bool, target ClusterTargetHeader) ([]Worker, error)
 	Get(clusterIDOrName, workerID string, target ClusterTargetHeader) (Worker, error)
-	ReplaceWokerNode(clusterIDOrName, workerID string, target ClusterTargetHeader) (string, error)
+	ReplaceWokerNode(clusterIDOrName, workerID string, target ClusterTargetHeader, update bool) (string, error)
 	ListStorageAttachemnts(clusterIDOrName, workerID string, target ClusterTargetHeader) (VoulemeAttachments, error)
 	GetStorageAttachment(clusterIDOrName, workerID, volumeAttachmentID string, target ClusterTargetHeader) (VoulemeAttachment, error)
 	CreateStorageAttachment(payload VolumeRequest, target ClusterTargetHeader) (VoulemeAttachment, error)
@@ -144,11 +144,11 @@ func (r *worker) Get(clusterIDOrName, workerID string, target ClusterTargetHeade
 	return worker, err
 }
 
-func (r *worker) ReplaceWokerNode(clusterIDOrName, workerID string, target ClusterTargetHeader) (string, error) {
+func (r *worker) ReplaceWokerNode(clusterIDOrName, workerID string, target ClusterTargetHeader, update bool) (string, error) {
 	payload := ReplaceWorker{
 		ClusterIDOrName: clusterIDOrName,
 		WorkerID:        workerID,
-		Update:          true,
+		Update:          update,
 	}
 	var response string
 	_, err := r.client.Post("/v2/vpc/replaceWorker", payload, &response, target.ToMap())

@@ -48,7 +48,7 @@ func main() {
 	}
 	workersAPI := clusterClient.Workers()
 
-	out, err := workersAPI.ReplaceWokerNode(clusterID, workerID, target)
+	out, err := workersAPI.ReplaceWokerNode(clusterID, workerID, target, true)
 
 	fmt.Println("out=", out)
 }
